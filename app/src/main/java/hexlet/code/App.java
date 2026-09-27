@@ -9,7 +9,11 @@ import java.util.concurrent.Callable;
 @Command(name = "gendiff",
         mixinStandardHelpOptions = true,
         version = "diff 0.1",
-        description = "Compares two configuration files and shows a difference."
+        description = """
+                Compares two configuration files and shows a difference.
+                      filepath1         path to first file
+                      filepath2         path to second file
+                """
 )
 public class App implements Callable<Integer> {
 
@@ -28,6 +32,13 @@ public class App implements Callable<Integer> {
             versionHelp = true,
             description = "Print version information and exit.")
     private Boolean versionInfoRequested;
+
+    /**
+     * Переменная для выбора выходного формата
+     */
+    @Option(names = {"-f", "--format"},
+            description = "output format [default: stylish]")
+    private String formate;
 
     /**
      * Метод для вызова каких-то значений
