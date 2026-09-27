@@ -4,6 +4,7 @@ import picocli.CommandLine;
 import picocli.CommandLine.Option;
 import picocli.CommandLine.Command;
 
+import java.nio.file.Path;
 import java.util.concurrent.Callable;
 
 @Command(name = "gendiff",
@@ -29,7 +30,7 @@ public class App implements Callable<Integer> {
 
     @Override
     public Integer call() throws Exception {
-        return 0;
+        return 1;
     }
 
     /**
