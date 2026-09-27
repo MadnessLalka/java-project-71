@@ -1,4 +1,5 @@
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
+import org.gradle.kotlin.dsl.annotationProcessor
 
 plugins {
     id("java")
@@ -43,6 +44,7 @@ checkstyle {
         testRuntimeOnly("org.junit.platform:junit-platform-launcher")
         implementation("com.puppycrawl.tools:checkstyle:14.1.0")
         implementation("info.picocli:picocli:4.7.7")
+        annotationProcessor("info.picocli:picocli-codegen:4.7.7")
     }
 
     tasks.test {
