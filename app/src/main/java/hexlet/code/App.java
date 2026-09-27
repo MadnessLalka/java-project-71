@@ -2,11 +2,14 @@ package hexlet.code;
 
 import picocli.CommandLine;
 import picocli.CommandLine.Option;
+import picocli.CommandLine.Command;
 
-@CommandLine.Command(name = "gendiff",
+import java.util.concurrent.Callable;
+
+@Command(name = "gendiff",
         mixinStandardHelpOptions = true,
         version = "diff 0.1")
-public class App implements Runnable {
+public class App implements Callable<Integer> {
 
     /**
      * Переменная для отображения help
@@ -25,8 +28,8 @@ public class App implements Runnable {
     private Boolean versionInfoRequested;
 
     @Override
-    public void run() {
-
+    public Integer call() throws Exception {
+        return 0;
     }
 
     /**
@@ -41,10 +44,8 @@ public class App implements Runnable {
 
         if (commandLine.isUsageHelpRequested()) {
             commandLine.usage(System.out);
-            return;
         } else if (commandLine.isVersionHelpRequested()) {
             commandLine.printVersionHelp(System.out);
-            return;
         }
     }
 
