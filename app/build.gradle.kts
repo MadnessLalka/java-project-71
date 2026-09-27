@@ -1,7 +1,4 @@
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
-import org.gradle.api.tasks.testing.Test
-import org.gradle.api.tasks.testing.logging.TestExceptionFormat
-import org.gradle.api.tasks.testing.logging.TestLogEvent
 
 plugins {
     id("java")
@@ -9,6 +6,10 @@ plugins {
     jacoco
     application
     checkstyle
+}
+
+application {
+    mainClass = "hexlet.code.App"
 }
 
 java {
@@ -37,7 +38,8 @@ dependencies {
     testImplementation(platform("org.junit:junit-bom:6.1.3"))
     testImplementation("org.junit.jupiter:junit-jupiter")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
-    implementation("com.puppycrawl.tools:checkstyle:14.1.0") }
+    implementation("com.puppycrawl.tools:checkstyle:14.1.0")
+}
 
 tasks.test {
     useJUnitPlatform()
