@@ -1,15 +1,16 @@
 package hexlet.code;
 
 import picocli.CommandLine;
-import picocli.CommandLine.Option;
 import picocli.CommandLine.Command;
+import picocli.CommandLine.Option;
 
-import java.nio.file.Path;
 import java.util.concurrent.Callable;
 
 @Command(name = "gendiff",
         mixinStandardHelpOptions = true,
-        version = "diff 0.1")
+        version = "diff 0.1",
+        description = "Compares two configuration files and shows a difference."
+)
 public class App implements Callable<Integer> {
 
     /**
@@ -28,6 +29,9 @@ public class App implements Callable<Integer> {
             description = "Print version information and exit.")
     private Boolean versionInfoRequested;
 
+    /**
+     * Метод для вызова каких-то значений
+     */
     @Override
     public Integer call() throws Exception {
         return 1;

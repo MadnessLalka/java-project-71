@@ -4,7 +4,10 @@ import java.nio.file.Path;
 
 public class Differ {
 
-    public static String generate(Path filePath1, Path filePath2){
+    /**
+     * Метод генерирующий разницу между двумя файлми
+     */
+    public static String generate(final Path filePath1, final Path filePath2){
         return "";
     }
 }
