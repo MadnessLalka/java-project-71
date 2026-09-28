@@ -6,6 +6,7 @@ import tools.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.util.Map;
 
@@ -17,22 +18,25 @@ public class Differ {
      */
     public static String generate(Path filePath1, Path filePath2) throws IOException {
 
-        filePath1 = filePath1.toAbsolutePath().normalize();
-        filePath2 = filePath2.toAbsolutePath().normalize();
-
-        if (Files.notExists(filePath1)) {
-            throw new IOException("File " + filePath1.getFileName() + " not found");
-        }
-
-        if (Files.notExists(filePath2)) {
-            throw new IOException("File " + filePath2.getFileName() + " not found");
-        }
-
-        var dataFirstFile = convertJsonToMap(filePath1);
-        var dataSecondFile = convertJsonToMap(filePath2);
+        var dataFirstFile = convertJsonToMap(
+                validateAndNormalize(filePath1)
+        );
+        var dataSecondFile = convertJsonToMap(
+                validateAndNormalize(filePath2)
+        );
 
         return dataFirstFile + "\n" + dataSecondFile;
 
+    }
+
+    private static Path validateAndNormalize(Path path) throws NoSuchFileException {
+        Path normalizedPath = path.toAbsolutePath().normalize();
+
+        if (Files.notExists(normalizedPath)) {
+            throw new NoSuchFileException("File " + normalizedPath.getFileName() + " not found");
+        }
+
+        return normalizedPath;
     }
 
     private static Map convertJsonToMap(Path json) {
