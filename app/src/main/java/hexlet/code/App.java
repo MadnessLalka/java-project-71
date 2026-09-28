@@ -1,12 +1,13 @@
 package hexlet.code;
 
+import lombok.SneakyThrows;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 import picocli.CommandLine.Parameters;
 
+import java.io.IOException;
 import java.nio.file.Path;
-import java.util.concurrent.Callable;
 
 @Command(name = "gendiff",
         mixinStandardHelpOptions = true,
@@ -14,7 +15,7 @@ import java.util.concurrent.Callable;
         showDefaultValues = true,
         description = "Compares two configuration files and shows a difference."
 )
-public class App implements Callable<Integer> {
+public class App implements Runnable {
     /**
      * Переменная пути для первого файла
      *
@@ -59,9 +60,12 @@ public class App implements Callable<Integer> {
     /**
      * Метод для вызова каких-то значений
      */
+    @SneakyThrows
     @Override
-    public Integer call() throws Exception {
-        return 1;
+    public void run() {
+        var diff = Differ.generate(filePath1, filePath2);
+        System.out.println(diff);
+
     }
 
     /**
@@ -70,15 +74,7 @@ public class App implements Callable<Integer> {
      * @param args аргументы командной строки
      */
     public static void main(final String[] args) {
-        CommandLine commandLine = new CommandLine(new App());
-
-        commandLine.parseArgs(args);
-
-        if (commandLine.isUsageHelpRequested()) {
-            commandLine.usage(System.out);
-        } else if (commandLine.isVersionHelpRequested()) {
-            commandLine.printVersionHelp(System.out);
-        }
+        System.exit(new CommandLine(new App()).execute(args));
     }
 
 
