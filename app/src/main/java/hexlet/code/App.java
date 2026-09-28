@@ -3,19 +3,28 @@ package hexlet.code;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
+import picocli.CommandLine.Parameters;
 
+import java.nio.file.Path;
 import java.util.concurrent.Callable;
 
 @Command(name = "gendiff",
         mixinStandardHelpOptions = true,
         version = "diff 0.1",
-        description = """
-                Compares two configuration files and shows a difference.
-                      filepath1         path to first file
-                      filepath2         path to second file
-                """
-)
+        showDefaultValues = true,
+        description = "Compares two configuration files and shows a difference.")
 public class App implements Callable<Integer> {
+    /**
+     * Переменная пути до файла 1
+     */
+    @Parameters(paramLabel="filepath1", description = "path to first file")
+    private Path filePath1;
+
+    /**
+     * Переменная пути до файла 2
+     */
+    @Parameters(paramLabel="filepath2", description = "path to second file")
+    private Path filePath2;
 
     /**
      * Переменная для отображения help
@@ -37,6 +46,7 @@ public class App implements Callable<Integer> {
      * Переменная для выбора выходного формата
      */
     @Option(names = {"-f", "--format"},
+            paramLabel = "format",
             description = "output format [default: stylish]")
     private String formate;
 
