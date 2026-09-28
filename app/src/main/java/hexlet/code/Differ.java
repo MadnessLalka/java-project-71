@@ -1,7 +1,8 @@
 package hexlet.code;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import lombok.NoArgsConstructor;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -27,21 +28,17 @@ public class Differ {
             throw new IOException("File " + filePath2.getFileName() + " not found");
         }
 
-        var dataFirstFile = Files.readString(filePath1);
-        var dataSecondFile = Files.readString(filePath2);
-
-        System.out.println("Data first file: " + dataFirstFile);
-        System.out.println("Data second file: " + dataSecondFile);
+        var dataFirstFile = convertJsonToMap(filePath1);
+        var dataSecondFile = convertJsonToMap(filePath2);
 
         return dataFirstFile + "\n" + dataSecondFile;
 
     }
 
-    private static Map convertJsonToMap(String stringJson){
-        ObjectMapper objectMapper = new ObjectMapper();
-        Map<String, Object> jsonMap = objectMapper.readValue(stringJson, new TypeReference<Map<String, Object>>(){});
-        return
-
+    private static Map convertJsonToMap(Path json) {
+        return new ObjectMapper().readValue(json,
+                new TypeReference<Map<String, Object>>() {
+                }
+        );
     }
-
 }
