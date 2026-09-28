@@ -29,12 +29,22 @@ public class Differ {
         );
 
 
-        return Stream.of(dataFirstFile.keySet())
-                .map(key -> dataSecondFile.get(key))
+        return dataFirstFile.keySet().stream()
                 .sorted()
-                .peek(System.out::println)
-                .collect(Collectors.toList()).toString();
+                .map(key -> {
+                    var firstVal = dataFirstFile.get(key);
+                    var secondVal = dataSecondFile.get(key);
 
+                    if (dataFirstFile.containsKey(key) && !dataSecondFile.containsKey(key)) {
+                        return "  - " + key + ": " + firstVal;
+                    } else if (dataSecondFile.containsKey(key) && (firstVal.equals(secondVal))) {
+                        return "    " + key + ": " + firstVal;
+                    } else if (dataSecondFile.containsKey(key)) {
+                        return "  - " + key + ": " + firstVal + "\n" + "  + " + key + ": " + secondVal;
+                    }
+
+                    return "{}";
+                }).collect(Collectors.joining("\n"));
     }
 
     private static Path validateAndNormalize(Path path) throws NoSuchFileException {
@@ -47,9 +57,8 @@ public class Differ {
         return normalizedPath;
     }
 
-    private static Map convertJsonToMap(Path json) {
-        return new ObjectMapper().readValue(json,
-                new TypeReference<Map<String, Object>>() {
+    private static Map<String, Object> convertJsonToMap(Path json) {
+        return new ObjectMapper().readValue(json, new TypeReference<>() {
                 }
         );
     }
