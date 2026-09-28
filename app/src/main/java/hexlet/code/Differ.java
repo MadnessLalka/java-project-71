@@ -9,6 +9,8 @@ import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @NoArgsConstructor
 public class Differ {
@@ -21,11 +23,17 @@ public class Differ {
         var dataFirstFile = convertJsonToMap(
                 validateAndNormalize(filePath1)
         );
+
         var dataSecondFile = convertJsonToMap(
                 validateAndNormalize(filePath2)
         );
 
-        return dataFirstFile + "\n" + dataSecondFile;
+
+        return Stream.of(dataFirstFile.keySet())
+                .map(key -> dataSecondFile.get(key))
+                .sorted()
+                .peek(System.out::println)
+                .collect(Collectors.toList()).toString();
 
     }
 

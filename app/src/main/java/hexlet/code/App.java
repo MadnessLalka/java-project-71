@@ -7,6 +7,7 @@ import picocli.CommandLine.Option;
 import picocli.CommandLine.Parameters;
 
 import java.nio.file.Path;
+import java.util.concurrent.Callable;
 
 @Command(name = "gendiff",
         mixinStandardHelpOptions = true,
@@ -14,7 +15,7 @@ import java.nio.file.Path;
         showDefaultValues = true,
         description = "Compares two configuration files and shows a difference."
 )
-public class App implements Runnable {
+public class App implements Callable<String> {
     /**
      * Переменная пути для первого файла
      *
@@ -56,16 +57,18 @@ public class App implements Runnable {
             description = "output format [default: stylish]")
     private String formate;
 
+    @Override
+    public String call() throws Exception {
+        System.out.println(Differ.generate(filePath1, filePath2));
+
+        return Differ.generate(filePath1, filePath2);
+    }
+
     /**
      * Метод для вызова каких-то значений
      */
     @SneakyThrows
-    @Override
-    public void run() {
-        var diff = Differ.generate(filePath1, filePath2);
-        System.out.println(diff);
 
-    }
 
     /**
      * Главный метод приложения. Точка входа в программу.
