@@ -10,7 +10,6 @@ import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.util.Map;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @NoArgsConstructor
 public class Differ {
@@ -28,24 +27,55 @@ public class Differ {
                 validateAndNormalize(filePath2)
         );
 
-
-        return dataFirstFile.keySet().stream()
+        var differ = dataFirstFile.keySet().stream()
                 .sorted()
-                .map(key -> {
-                    var firstVal = dataFirstFile.get(key);
-                    var secondVal = dataSecondFile.get(key);
+                .map(key -> differBody(dataFirstFile, dataSecondFile, key))
+                .collect(Collectors.joining("\n"));
 
-                    if (dataFirstFile.containsKey(key) && !dataSecondFile.containsKey(key)) {
-                        return "  - " + key + ": " + firstVal;
-                    } else if (dataSecondFile.containsKey(key) && (firstVal.equals(secondVal))) {
-                        return "    " + key + ": " + firstVal;
-                    } else if (dataSecondFile.containsKey(key)) {
-                        return "  - " + key + ": " + firstVal + "\n" + "  + " + key + ": " + secondVal;
-                    }
+        var differEnd = dataSecondFile.keySet().stream()
+                .map(key -> differEnd(dataFirstFile, dataSecondFile, key))
+                .collect(Collectors.joining("\n"));
 
-                    return "{}";
-                }).collect(Collectors.joining("\n"));
+        if (!differEnd.isEmpty()) {
+            differ += differEnd;
+        }
+
+        return "{\n" + differ + "}";
     }
+
+
+    private static String differBody(Map<String, Object> dataFirstFile,
+                                     Map<String, Object> dataSecondFile,
+                                     String key
+    ) {
+        var firstVal = dataFirstFile.get(key);
+        var secondVal = dataSecondFile.get(key);
+        var result = "";
+
+        if (dataFirstFile.containsKey(key) && !dataSecondFile.containsKey(key)) {
+            result += "  - " + key + ": " + firstVal;
+        } else if (dataSecondFile.containsKey(key) && (firstVal.equals(secondVal))) {
+            result += "    " + key + ": " + firstVal;
+        } else if (dataSecondFile.containsKey(key)) {
+            result += "  - " + key + ": " + firstVal + "\n" + "  + " + key + ": " + secondVal;
+        }
+
+        return result;
+    }
+
+    private static String differEnd(Map<String, Object> dataFirstFile,
+                                    Map<String, Object> dataSecondFile,
+                                    String key
+    ) {
+        var result = "";
+
+        if (!dataFirstFile.containsKey(key)) {
+            result += "  + " + key + ": " + dataSecondFile.get(key);
+        }
+
+        return result;
+    }
+
 
     private static Path validateAndNormalize(Path path) throws NoSuchFileException {
         Path normalizedPath = path.toAbsolutePath().normalize();
