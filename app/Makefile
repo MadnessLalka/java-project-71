@@ -1,5 +1,5 @@
 install-dist:
-	./gradlew installDist
+	gradle installDist
 
 run-dist:
 	./build/install/app/bin/app
