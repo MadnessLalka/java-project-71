@@ -4,6 +4,7 @@ import org.gradle.kotlin.dsl.annotationProcessor
 plugins {
     id("java")
     id("io.github.ben-manes.versions") version "0.64.0"
+    id("com.diffplug.spotless") version "8.10.3"
     jacoco
     application
     checkstyle
@@ -15,8 +16,28 @@ java {
     }
 }
 
+spotless {
+    java {
+        // don't need to set target, it is inferred from java
+
+        // apply a specific flavor of google-java-format
+        // googleJavaFormat('1.8').aosp().reflowLongStrings().skipJavadocFormatting()
+        // fix formatting of type annotations
+        importOrder()
+        googleJavaFormat().aosp()
+        formatAnnotations()
+        removeUnusedImports()
+        leadingTabsToSpaces(4)
+        endWithNewline()
+        // make sure every file has the following copyright header.
+        // optionally, Spotless can set copyright years by digging
+        // through git history (see "license" section below)
+        // licenseHeader '/* (C)$YEAR */'
+    }
+}
+
 checkstyle {
-    toolVersion = "14.1.0"
+    toolVersion = "14.3.0"
 
     application {
         mainClass = "hexlet.code.App"
