@@ -1,25 +1,23 @@
 package hexlet.code;
 
-import lombok.SneakyThrows;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import picocli.CommandLine;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import lombok.SneakyThrows;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import picocli.CommandLine;
 
 public class AppTest {
 
     private static StringWriter buffer;
     private static CommandLine commandLine;
-
 
     private static Path getFixturePath(String fixtureName) {
         return Paths.get("src", "test", "resources", "fixtures", fixtureName)
@@ -36,13 +34,12 @@ public class AppTest {
     void beforeEach() {
         buffer = new StringWriter();
         commandLine = new CommandLine(new App());
-
     }
 
     @SneakyThrows
     @Test
     public void testAppHelp() {
-        var args = new String[]{"-h"};
+        var args = new String[] {"-h"};
 
         commandLine.setOut(new PrintWriter(buffer));
         commandLine.execute(args);
@@ -56,7 +53,7 @@ public class AppTest {
     @SneakyThrows
     @Test
     public void testAppVersion() {
-        var args = new String[]{"-V"};
+        var args = new String[] {"-V"};
 
         commandLine.setOut(new PrintWriter(buffer));
         commandLine.execute(args);
@@ -70,10 +67,10 @@ public class AppTest {
     @SneakyThrows
     @Test
     public void testAppDiffer() {
-        var args = new String[]{
-                getFixturePath("file1.json").toString(),
-                getFixturePath("file2.json").toString()
-        };
+        var args =
+                new String[] {
+                    getFixturePath("file1.json").toString(), getFixturePath("file2.json").toString()
+                };
 
         commandLine.setOut(new PrintWriter(buffer));
         commandLine.execute(args);
@@ -87,7 +84,7 @@ public class AppTest {
     @SneakyThrows
     @Test
     public void testAppDifferWithoutFiles() {
-        var args = new String[]{};
+        var args = new String[] {};
 
         commandLine.setErr(new PrintWriter(buffer));
         commandLine.execute(args);
@@ -101,10 +98,11 @@ public class AppTest {
     @SneakyThrows
     @Test
     public void testAppDifferFileNotFound() {
-        var args = new String[]{
-                getFixturePath("fileTest1.json").toString(),
-                getFixturePath("fileTest2.json").toString()
-        };
+        var args =
+                new String[] {
+                    getFixturePath("fileTest1.json").toString(),
+                    getFixturePath("fileTest2.json").toString()
+                };
 
         commandLine.setErr(new PrintWriter(buffer));
         int exitCode = commandLine.execute(args);

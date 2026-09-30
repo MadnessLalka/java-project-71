@@ -96,6 +96,9 @@ checkstyle {
         }
     }
 
+    tasks.test { finalizedBy(tasks.jacocoTestReport) }
+
+
 // Порог покрытия: ниже него `./gradlew build` падает,
 // и сборка в CI краснеет вместе с ним.
     tasks.jacocoTestCoverageVerification {
