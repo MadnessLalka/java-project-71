@@ -1,6 +1,7 @@
 package hexlet.code;
 
 import lombok.SneakyThrows;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import picocli.CommandLine;
@@ -12,6 +13,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class AppTest {
 
@@ -34,6 +36,7 @@ public class AppTest {
     void beforeEach() {
         buffer = new StringWriter();
         commandLine = new CommandLine(new App());
+
     }
 
     @SneakyThrows
@@ -67,7 +70,10 @@ public class AppTest {
     @SneakyThrows
     @Test
     public void testAppDiffer() {
-        var args = new String[]{" ",readFixture("file1.json"), " ", readFixture("file2.json")};
+        var args = new String[]{
+                getFixturePath("file1.json").toString(),
+                getFixturePath("file2.json").toString()
+        };
 
         commandLine.setOut(new PrintWriter(buffer));
         commandLine.execute(args);
@@ -76,5 +82,34 @@ public class AppTest {
         var expected = readFixture("resultDiffer.txt").trim();
 
         assertEquals(expected, actual);
+    }
+
+    @SneakyThrows
+    @Test
+    public void testAppDifferWithoutFiles() {
+        var args = new String[]{};
+
+        commandLine.setErr(new PrintWriter(buffer));
+        commandLine.execute(args);
+
+        var actual = buffer.toString().trim();
+        var expected = readFixture("resultDifferWithoutFiles.txt").trim();
+
+        assertEquals(expected, actual);
+    }
+
+    @SneakyThrows
+    @Test
+    public void testAppDifferFileNotFound() {
+        var args = new String[]{
+                getFixturePath("fileTest1.json").toString(),
+                getFixturePath("fileTest2.json").toString()
+        };
+
+        commandLine.setErr(new PrintWriter(buffer));
+        int exitCode = commandLine.execute(args);
+
+        Assertions.assertNotEquals(0, exitCode);
+        assertTrue(buffer.toString().trim().contains("NoSuchFileException"));
     }
 }
