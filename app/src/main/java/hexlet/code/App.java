@@ -54,8 +54,6 @@ public class App implements Callable<String> {
 
     @Override
     public String call() throws Exception {
-        System.out.println(Differ.generate(filePath1, filePath2));
-
         return Differ.generate(filePath1, filePath2);
     }
 
