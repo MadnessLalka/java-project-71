@@ -18,3 +18,5 @@ jobs:
         working-directory: app
       - run: make run-dist
         working-directory: app
+      - run: make test
+        working-directory: app
