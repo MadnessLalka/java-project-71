@@ -66,10 +66,44 @@ public class AppTest {
 
     @SneakyThrows
     @Test
-    public void testAppDiffer() {
+    public void testAppDifferJson() {
         var args =
                 new String[] {
                     getFixturePath("file1.json").toString(), getFixturePath("file2.json").toString()
+                };
+
+        commandLine.setOut(new PrintWriter(buffer));
+        commandLine.execute(args);
+
+        var actual = buffer.toString().trim();
+        var expected = readFixture("resultDiffer.txt").trim();
+
+        assertEquals(expected, actual);
+    }
+
+    @SneakyThrows
+    @Test
+    public void testAppDifferYml() {
+        var args =
+                new String[] {
+                    getFixturePath("file1.yml").toString(), getFixturePath("file2.yml").toString()
+                };
+
+        commandLine.setOut(new PrintWriter(buffer));
+        commandLine.execute(args);
+
+        var actual = buffer.toString().trim();
+        var expected = readFixture("resultDiffer.txt").trim();
+
+        assertEquals(expected, actual);
+    }
+
+    @SneakyThrows
+    @Test
+    public void testAppDifferYaml() {
+        var args =
+                new String[] {
+                    getFixturePath("file1.yaml").toString(), getFixturePath("file2.yaml").toString()
                 };
 
         commandLine.setOut(new PrintWriter(buffer));

@@ -66,7 +66,9 @@ checkstyle {
         implementation("com.puppycrawl.tools:checkstyle:14.3.0")
         implementation("info.picocli:picocli:4.7.7")
         annotationProcessor("info.picocli:picocli-codegen:4.7.7")
-        implementation("tools.jackson.core:jackson-databind:3.2.3")    }
+        implementation("tools.jackson.core:jackson-databind:3.2.3")
+        implementation("tools.jackson.dataformat:jackson-dataformat-yaml:3.2.3")
+    }
 
     tasks.test {
         useJUnitPlatform()

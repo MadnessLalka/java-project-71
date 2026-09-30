@@ -8,17 +8,15 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import lombok.NoArgsConstructor;
 import tools.jackson.core.type.TypeReference;
-import tools.jackson.databind.ObjectMapper;
 
 @NoArgsConstructor
 public class Differ {
-
     /** Метод генерирующий разницу между двумя файлами */
     public static String generate(Path filePath1, Path filePath2) throws IOException {
 
-        var dataFirstFile = convertJsonToMap(validateAndNormalize(filePath1));
+        var dataFirstFile = convertObjectToMap(validateAndNormalize(filePath1));
 
-        var dataSecondFile = convertJsonToMap(validateAndNormalize(filePath2));
+        var dataSecondFile = convertObjectToMap(validateAndNormalize(filePath2));
 
         var differ =
                 dataFirstFile.keySet().stream()
@@ -76,7 +74,7 @@ public class Differ {
         return normalizedPath;
     }
 
-    private static Map<String, Object> convertJsonToMap(Path json) {
-        return new ObjectMapper().readValue(json, new TypeReference<>() {});
+    private static Map<String, Object> convertObjectToMap(Path file) {
+        return Parser.getObjectMapper(file).readValue(file, new TypeReference<>() {});
     }
 }
