@@ -18,10 +18,8 @@ public class Plain {
         } else if (isKeyContains && !(firstVal.equals(secondVal))) {
             result += "Property '" + key + "' was updated. From " +
                     convertValueToFormatter(firstVal) + " to " + convertValueToFormatter(secondVal);
-        } else if (isKeyContains && firstVal.equals(secondVal)) {
-            result += "    " + key + ": " + firstVal;
         } else if (!dataFirstFile.containsKey(key) && dataSecondFile.containsKey(key)) {
-            result += "  + " + key + ": " + secondVal;
+            result += "Property '" + key + "' was added with value: " + convertValueToFormatter(secondVal);
         }
 
         return result;
