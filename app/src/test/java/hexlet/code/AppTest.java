@@ -1,18 +1,19 @@
 package hexlet.code;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import lombok.SneakyThrows;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import picocli.CommandLine;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import lombok.SneakyThrows;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import picocli.CommandLine;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class AppTest {
 
@@ -39,7 +40,7 @@ public class AppTest {
     @SneakyThrows
     @Test
     public void testAppHelp() {
-        var args = new String[] {"-h"};
+        var args = new String[]{"-h"};
 
         commandLine.setOut(new PrintWriter(buffer));
         commandLine.execute(args);
@@ -53,7 +54,7 @@ public class AppTest {
     @SneakyThrows
     @Test
     public void testAppVersion() {
-        var args = new String[] {"-V"};
+        var args = new String[]{"-V"};
 
         commandLine.setOut(new PrintWriter(buffer));
         commandLine.execute(args);
@@ -68,8 +69,8 @@ public class AppTest {
     @Test
     public void testAppDifferJson() {
         var args =
-                new String[] {
-                    getFixturePath("file1.json").toString(), getFixturePath("file2.json").toString()
+                new String[]{
+                        getFixturePath("file1.json").toString(), getFixturePath("file2.json").toString()
                 };
 
         commandLine.setOut(new PrintWriter(buffer));
@@ -85,8 +86,8 @@ public class AppTest {
     @Test
     public void testAppDifferYml() {
         var args =
-                new String[] {
-                    getFixturePath("file1.yml").toString(), getFixturePath("file2.yml").toString()
+                new String[]{
+                        getFixturePath("file1.yml").toString(), getFixturePath("file2.yml").toString()
                 };
 
         commandLine.setOut(new PrintWriter(buffer));
@@ -102,8 +103,8 @@ public class AppTest {
     @Test
     public void testAppDifferYaml() {
         var args =
-                new String[] {
-                    getFixturePath("file1.yaml").toString(), getFixturePath("file2.yaml").toString()
+                new String[]{
+                        getFixturePath("file1.yaml").toString(), getFixturePath("file2.yaml").toString()
                 };
 
         commandLine.setOut(new PrintWriter(buffer));
@@ -118,7 +119,7 @@ public class AppTest {
     @SneakyThrows
     @Test
     public void testAppDifferWithoutFiles() {
-        var args = new String[] {};
+        var args = new String[]{};
 
         commandLine.setErr(new PrintWriter(buffer));
         commandLine.execute(args);
@@ -133,9 +134,9 @@ public class AppTest {
     @Test
     public void testAppDifferFileNotFound() {
         var args =
-                new String[] {
-                    getFixturePath("fileTest1.json").toString(),
-                    getFixturePath("fileTest2.json").toString()
+                new String[]{
+                        getFixturePath("fileTest1.json").toString(),
+                        getFixturePath("fileTest2.json").toString()
                 };
 
         commandLine.setErr(new PrintWriter(buffer));
@@ -143,5 +144,23 @@ public class AppTest {
 
         Assertions.assertNotEquals(0, exitCode);
         assertTrue(buffer.toString().trim().contains("NoSuchFileException"));
+    }
+
+    @SneakyThrows
+    @Test
+    public void testAppHardDifferJSON() {
+        var args =
+                new String[]{
+                        getFixturePath("hardFile1.json").toString(),
+                        getFixturePath("hardFile2.json").toString()
+                };
+
+        commandLine.setOut(new PrintWriter(buffer));
+        commandLine.execute(args);
+
+        var actual = buffer.toString().trim();
+        var expected = readFixture("resultHardDiffer.txt").trim();
+
+        assertEquals(expected, actual);
     }
 }
