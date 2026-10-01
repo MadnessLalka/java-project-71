@@ -10,6 +10,8 @@ import java.util.stream.Stream;
 import lombok.NoArgsConstructor;
 import tools.jackson.core.type.TypeReference;
 
+import static hexlet.code.formatter.Stylish.formatterStylish;
+
 @NoArgsConstructor
 public class Differ {
     /** Метод генерирующий разницу между двумя файлами */
@@ -26,32 +28,10 @@ public class Differ {
 
         var differ =
                 differSortedListKey.stream()
-                        .map(key -> differBody(dataFirstFile, dataSecondFile, key))
+                        .map(key -> formatterStylish(dataFirstFile, dataSecondFile, key))
                         .collect(Collectors.joining("\n"));
 
         return "{\n" + differ + "\n}";
-    }
-
-    private static String differBody(
-            Map<String, Object> dataFirstFile, Map<String, Object> dataSecondFile, String key) {
-
-        var firstVal = dataFirstFile.get(key) == null ? "null" : dataFirstFile.get(key);
-        var secondVal = dataSecondFile.get(key) == null ? "null" : dataSecondFile.get(key);
-        var isKeyContains = dataFirstFile.containsKey(key) && dataSecondFile.containsKey(key);
-
-        var result = "";
-
-        if (dataFirstFile.containsKey(key) && !dataSecondFile.containsKey(key)) {
-            result += "  - " + key + ": " + firstVal;
-        } else if (isKeyContains && !(firstVal.equals(secondVal))) {
-            result += "  - " + key + ": " + firstVal + "\n" + "  + " + key + ": " + secondVal;
-        } else if (isKeyContains && firstVal.equals(secondVal)) {
-            result += "    " + key + ": " + firstVal;
-        } else if (!dataFirstFile.containsKey(key) && dataSecondFile.containsKey(key)) {
-            result += "  + " + key + ": " + secondVal;
-        }
-
-        return result;
     }
 
     private static Path validateAndNormalize(Path path) throws NoSuchFileException {

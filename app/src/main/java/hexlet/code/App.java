@@ -1,7 +1,5 @@
 package hexlet.code;
 
-import java.nio.file.Path;
-import java.util.concurrent.Callable;
 import lombok.SneakyThrows;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
@@ -9,6 +7,9 @@ import picocli.CommandLine.Model.CommandSpec;
 import picocli.CommandLine.Option;
 import picocli.CommandLine.Parameters;
 import picocli.CommandLine.Spec;
+
+import java.nio.file.Path;
+import java.util.concurrent.Callable;
 
 @Command(
         name = "gendiff",
@@ -18,7 +19,8 @@ import picocli.CommandLine.Spec;
         description = "Compares two configuration files and shows a difference.")
 public class App implements Callable<Integer> {
 
-    @Spec CommandSpec spec;
+    @Spec
+    CommandSpec spec;
 
     /**
      * Переменная пути для первого файла
@@ -36,21 +38,27 @@ public class App implements Callable<Integer> {
     @Parameters(paramLabel = "filepath2", description = "path to second file")
     private Path filePath2;
 
-    /** Переменная для отображения help */
+    /**
+     * Переменная для отображения help
+     */
     @Option(
             names = {"-h", "--help"},
             usageHelp = true,
             description = "Show this help message and exit.")
     private Boolean usageHelpRequested;
 
-    /** Переменная для отображения version */
+    /**
+     * Переменная для отображения version
+     */
     @Option(
             names = {"-V", "--version"},
             versionHelp = true,
             description = "Print version information and exit.")
     private Boolean versionInfoRequested;
 
-    /** Переменная для выбора выходного формата */
+    /**
+     * Переменная для выбора выходного формата
+     */
     @Option(
             names = {"-f", "--format"},
             paramLabel = "format",
@@ -59,7 +67,9 @@ public class App implements Callable<Integer> {
             description = "output format [default: ${DEFAULT-VALUE}]")
     private String formate;
 
-    /** Метод для вызова каких-то значений */
+    /**
+     * Метод для вызова каких-то значений
+     */
     @SneakyThrows
     @Override
     public Integer call() {
