@@ -54,7 +54,9 @@ public class App implements Callable<Integer> {
     @Option(
             names = {"-f", "--format"},
             paramLabel = "format",
-            description = "output format [default: stylish]")
+            defaultValue = "stylish",
+            showDefaultValue = CommandLine.Help.Visibility.NEVER,
+            description = "output format [default: ${DEFAULT-VALUE}]")
     private String formate;
 
     /** Метод для вызова каких-то значений */

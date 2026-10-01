@@ -162,4 +162,22 @@ public class AppTest {
 
         assertEquals(expected, actual);
     }
+
+    @SneakyThrows
+    @Test
+    public void testAppHardDifferYML() {
+        var args =
+                new String[] {
+                        getFixturePath("hardFile1.yml").toString(),
+                        getFixturePath("hardFile2.yml").toString()
+                };
+
+        commandLine.setOut(new PrintWriter(buffer));
+        commandLine.execute(args);
+
+        var actual = buffer.toString().trim();
+        var expected = readFixture("resultHardDiffer.txt").trim();
+
+        assertEquals(expected, actual);
+    }
 }
