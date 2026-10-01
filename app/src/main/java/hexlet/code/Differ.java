@@ -1,8 +1,5 @@
 package hexlet.code;
 
-import lombok.NoArgsConstructor;
-import tools.jackson.core.type.TypeReference;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
@@ -10,12 +7,12 @@ import java.nio.file.Path;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import lombok.NoArgsConstructor;
+import tools.jackson.core.type.TypeReference;
 
 @NoArgsConstructor
 public class Differ {
-    /**
-     * Метод генерирующий разницу между двумя файлами
-     */
+    /** Метод генерирующий разницу между двумя файлами */
     public static String generate(Path filePath1, Path filePath2) throws IOException {
 
         var dataFirstFile = convertObjectToMap(validateAndNormalize(filePath1));
@@ -68,7 +65,6 @@ public class Differ {
     }
 
     private static Map<String, Object> convertObjectToMap(Path file) {
-        return Parser.getObjectMapper(file).readValue(file, new TypeReference<>() {
-        });
+        return Parser.getObjectMapper(file).readValue(file, new TypeReference<>() {});
     }
 }

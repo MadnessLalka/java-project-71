@@ -168,8 +168,8 @@ public class AppTest {
     public void testAppHardDifferYML() {
         var args =
                 new String[] {
-                        getFixturePath("hardFile1.yml").toString(),
-                        getFixturePath("hardFile2.yml").toString()
+                    getFixturePath("hardFile1.yml").toString(),
+                    getFixturePath("hardFile2.yml").toString()
                 };
 
         commandLine.setOut(new PrintWriter(buffer));
