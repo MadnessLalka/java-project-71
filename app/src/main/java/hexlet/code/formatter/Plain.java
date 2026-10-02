@@ -2,9 +2,13 @@ package hexlet.code.formatter;
 
 import java.util.List;
 import java.util.Map;
+import lombok.NoArgsConstructor;
 
-public class Plain {
-    public static String formatterPlain(
+@NoArgsConstructor
+public class Plain implements Formatter {
+
+    @Override
+    public String getFormatter(
             Map<String, Object> dataFirstFile, Map<String, Object> dataSecondFile, String key) {
 
         var firstVal = dataFirstFile.get(key) == null ? "null" : dataFirstFile.get(key);
@@ -16,13 +20,27 @@ public class Plain {
         if (dataFirstFile.containsKey(key) && !dataSecondFile.containsKey(key)) {
             result += "Property '" + key + "' was removed";
         } else if (isKeyContains && !(firstVal.equals(secondVal))) {
-            result += "Property '" + key + "' was updated. From " +
-                    convertValueToFormatter(firstVal) + " to " + convertValueToFormatter(secondVal);
+            result +=
+                    "Property '"
+                            + key
+                            + "' was updated. From "
+                            + convertValueToFormatter(firstVal)
+                            + " to "
+                            + convertValueToFormatter(secondVal);
         } else if (!dataFirstFile.containsKey(key) && dataSecondFile.containsKey(key)) {
-            result += "Property '" + key + "' was added with value: " + convertValueToFormatter(secondVal);
+            result +=
+                    "Property '"
+                            + key
+                            + "' was added with value: "
+                            + convertValueToFormatter(secondVal);
         }
 
         return result;
+    }
+
+    @Override
+    public String wrapIfNeeded(String data) {
+        return data;
     }
 
     private static String convertValueToFormatter(Object value) {
@@ -35,7 +53,6 @@ public class Plain {
             case Boolean bool -> value.toString();
             case null -> "null";
             default -> "[complex value]";
-
         };
     }
 }

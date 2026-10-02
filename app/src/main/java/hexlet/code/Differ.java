@@ -1,5 +1,8 @@
 package hexlet.code;
 
+import hexlet.code.formatter.Formatter;
+import hexlet.code.formatter.Plain;
+import hexlet.code.formatter.Stylish;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
@@ -10,12 +13,14 @@ import java.util.stream.Stream;
 import lombok.NoArgsConstructor;
 import tools.jackson.core.type.TypeReference;
 
-import static hexlet.code.formatter.Stylish.formatterStylish;
-
 @NoArgsConstructor
 public class Differ {
+
+    private static Formatter formatter;
+
     /** Метод генерирующий разницу между двумя файлами */
-    public static String generate(Path filePath1, Path filePath2) throws IOException {
+    public static String generate(Path filePath1, Path filePath2, String formate)
+            throws IOException {
 
         var dataFirstFile = convertObjectToMap(validateAndNormalize(filePath1));
         var dataSecondFile = convertObjectToMap(validateAndNormalize(filePath2));
@@ -26,12 +31,24 @@ public class Differ {
                         .sorted()
                         .toList();
 
-        var differ =
+        var diff =
                 differSortedListKey.stream()
-                        .map(key -> formatterStylish(dataFirstFile, dataSecondFile, key))
+                        .map(
+                                key -> {
+                                    formatter =
+                                            switch (formate) {
+                                                case "plain" -> new Plain();
+                                                case "stylish" -> new Stylish();
+                                                default ->
+                                                        throw new IllegalStateException(
+                                                                "Unexpected value: " + formate);
+                                            };
+                                    return formatter.getFormatter(
+                                            dataFirstFile, dataSecondFile, key);
+                                })
                         .collect(Collectors.joining("\n"));
 
-        return "{\n" + differ + "\n}";
+        return formatter.wrapIfNeeded(diff);
     }
 
     private static Path validateAndNormalize(Path path) throws NoSuchFileException {

@@ -1,9 +1,13 @@
 package hexlet.code.formatter;
 
 import java.util.Map;
+import lombok.NoArgsConstructor;
 
-public class Stylish {
-    public static String formatterStylish(
+@NoArgsConstructor
+public class Stylish implements Formatter {
+
+    @Override
+    public String getFormatter(
             Map<String, Object> dataFirstFile, Map<String, Object> dataSecondFile, String key) {
 
         var firstVal = dataFirstFile.get(key) == null ? "null" : dataFirstFile.get(key);
@@ -25,4 +29,8 @@ public class Stylish {
         return result;
     }
 
+    @Override
+    public String wrapIfNeeded(String data) {
+        return "{\n" + data + "\n}";
+    }
 }
