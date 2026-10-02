@@ -1,8 +1,9 @@
 package hexlet.code;
 
-import hexlet.code.formatter.Formatter;
-import hexlet.code.formatter.Plain;
-import hexlet.code.formatter.Stylish;
+import hexlet.code.formatters.Formatter;
+import hexlet.code.formatters.JSON;
+import hexlet.code.formatters.Plain;
+import hexlet.code.formatters.Stylish;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
@@ -17,11 +18,14 @@ import tools.jackson.core.type.TypeReference;
 public class Differ {
 
     public static Formatter formatter;
+    private static final Plain plain;
+    private static final Stylish stylish;
+    private static final JSON json;
 
     /** Метод генерирующий разницу между двумя файлами */
     public static String generate(Path filePath1, Path filePath2, String formate)
             throws IOException {
-
+        json = new ;
         var dataFirstFile = convertObjectToMap(validateAndNormalize(filePath1));
         var dataSecondFile = convertObjectToMap(validateAndNormalize(filePath2));
 
@@ -37,8 +41,9 @@ public class Differ {
                                 key -> {
                                     formatter =
                                             switch (formate) {
-                                                case "plain" -> new Plain();
-                                                case "stylish" -> new Stylish();
+                                                case "plain" -> plain;
+                                                case "stylish" -> stylish;
+                                                case "json" -> json;
                                                 default ->
                                                         throw new IllegalStateException(
                                                                 "Unexpected value: " + formate);
