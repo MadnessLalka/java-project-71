@@ -16,7 +16,7 @@ import tools.jackson.core.type.TypeReference;
 @NoArgsConstructor
 public class Differ {
 
-    private static Formatter formatter;
+    public static Formatter formatter;
 
     /** Метод генерирующий разницу между двумя файлами */
     public static String generate(Path filePath1, Path filePath2, String formate)
@@ -46,6 +46,7 @@ public class Differ {
                                     return formatter.getFormatter(
                                             dataFirstFile, dataSecondFile, key);
                                 })
+                        .filter(line -> !line.isBlank())
                         .collect(Collectors.joining("\n"));
 
         return formatter.wrapIfNeeded(diff);

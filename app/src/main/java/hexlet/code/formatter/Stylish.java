@@ -19,7 +19,7 @@ public class Stylish implements Formatter {
         if (dataFirstFile.containsKey(key) && !dataSecondFile.containsKey(key)) {
             result += "  - " + key + ": " + firstVal;
         } else if (isKeyContains && !(firstVal.equals(secondVal))) {
-            result += "  - " + key + ": " + firstVal + "\n" + "  + " + key + ": " + secondVal;
+            result += "  - " + key + ": " + firstVal + "\n  + " + key + ": " + secondVal;
         } else if (isKeyContains && firstVal.equals(secondVal)) {
             result += "    " + key + ": " + firstVal;
         } else if (!dataFirstFile.containsKey(key) && dataSecondFile.containsKey(key)) {

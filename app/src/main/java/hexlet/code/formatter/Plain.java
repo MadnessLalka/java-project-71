@@ -13,6 +13,7 @@ public class Plain implements Formatter {
 
         var firstVal = dataFirstFile.get(key) == null ? "null" : dataFirstFile.get(key);
         var secondVal = dataSecondFile.get(key) == null ? "null" : dataSecondFile.get(key);
+
         var isKeyContains = dataFirstFile.containsKey(key) && dataSecondFile.containsKey(key);
 
         var result = "";
@@ -40,18 +41,18 @@ public class Plain implements Formatter {
 
     @Override
     public String wrapIfNeeded(String data) {
-        return data;
+        return "\n" + data;
     }
 
-    private static String convertValueToFormatter(Object value) {
+    private String convertValueToFormatter(Object value) {
         return switch (value) {
-            case String str -> "'" + value + "'";
+            case null -> "null";
+            case String str -> value.equals("null") ? value.toString() : "'" + value + "'";
             case Integer inter -> value.toString();
             case List<?> list -> "[complex value]";
             case Object[] arr -> "[complex value]";
             case Map<?, ?> map -> "[complex value]";
             case Boolean bool -> value.toString();
-            case null -> "null";
             default -> "[complex value]";
         };
     }
