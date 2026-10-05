@@ -1,6 +1,5 @@
 package hexlet.code;
 
-import java.nio.file.Path;
 import java.util.concurrent.Callable;
 import lombok.SneakyThrows;
 import picocli.CommandLine;
