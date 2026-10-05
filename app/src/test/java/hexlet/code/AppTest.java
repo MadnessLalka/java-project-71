@@ -200,4 +200,24 @@ public class AppTest {
 
         assertEquals(expected, actual);
     }
+
+    @SneakyThrows
+    @Test
+    public void testAppHardDifferJSONFormate() {
+        var args =
+                new String[] {
+                    "-f",
+                    "json",
+                    getFixturePath("hardFile1.json").toString(),
+                    getFixturePath("hardFile2.json").toString()
+                };
+
+        commandLine.setOut(new PrintWriter(buffer));
+        commandLine.execute(args);
+
+        var actual = buffer.toString().trim();
+        var expected = readFixture("resultHardDifferJSONFormate.json").trim();
+
+        assertEquals(expected, actual);
+    }
 }

@@ -1,17 +1,16 @@
 package hexlet.code;
 
-import lombok.Data;
-import tools.jackson.core.type.TypeReference;
-import tools.jackson.databind.ObjectMapper;
-import tools.jackson.databind.json.JsonMapper;
-import tools.jackson.dataformat.yaml.YAMLMapper;
-
 import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
+import lombok.Data;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
+import tools.jackson.dataformat.yaml.YAMLMapper;
 
 @Data
 public class Parser {
@@ -26,10 +25,8 @@ public class Parser {
     }
 
     private Map<String, Object> convertObjectToMap(Path file) {
-        return getObjectMapper(file).readValue(file, new TypeReference<>() {
-        });
+        return getObjectMapper(file).readValue(file, new TypeReference<>() {});
     }
-
 
     private ObjectMapper getObjectMapper(Path path) {
         String format = path.getFileName().toString().toLowerCase().split("\\.")[1];
@@ -56,12 +53,9 @@ public class Parser {
     }
 
     private List<String> getListSortedKey() {
-        return
-                Stream.concat(originalFileMap.keySet().stream(), targetFileMap.keySet().stream())
-                        .distinct()
-                        .sorted()
-                        .toList();
+        return Stream.concat(originalFileMap.keySet().stream(), targetFileMap.keySet().stream())
+                .distinct()
+                .sorted()
+                .toList();
     }
-
-
 }

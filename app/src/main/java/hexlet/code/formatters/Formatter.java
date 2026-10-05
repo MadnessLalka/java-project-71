@@ -1,9 +1,8 @@
 package hexlet.code.formatters;
 
-import lombok.RequiredArgsConstructor;
-
 import java.util.List;
 import java.util.Map;
+import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public class Formatter {
@@ -18,32 +17,12 @@ public class Formatter {
         return formatStyle.getFormat(originalFileMap, targetFileMap, sortedListKey);
     }
 
-
     private Format getFormatObject(String format) {
         return switch (format) {
             case "plain" -> new Plain();
             case "stylish" -> new Stylish();
             case "json" -> new JSON();
-            default -> throw new IllegalStateException(
-                    "Unexpected value: " + format);
+            default -> throw new IllegalStateException("Unexpected value: " + format);
         };
     }
-
-
 }
-//        Stream<String> diff =
-//                differSortedListKey.stream()
-//                        .map(
-//                                key -> {
-//                                    formatter =
-//                                            switch (formate) {
-//                                                case "plain" -> new Plain();
-//                                                case "stylish" -> new Stylish();
-//                                                case "json" -> new JSON();
-//                                                default -> throw new IllegalStateException(
-//                                                        "Unexpected value: " + formate);
-//                                            };
-//                                    return formatter.getFormatter(
-//                                            dataFirstFile, dataSecondFile, key);
-//                                })
-//                        .filter(line -> !line.isBlank())

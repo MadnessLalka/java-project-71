@@ -1,5 +1,4 @@
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
-import org.gradle.kotlin.dsl.annotationProcessor
 
 plugins {
     id("java")
@@ -51,6 +50,8 @@ checkstyle {
     group = "hexlet.code"
     version = "1.0-SNAPSHOT"
 
+    application { mainClass.set("hexlet.code.App") }
+
     repositories {
         mavenCentral()
     }
@@ -81,7 +82,7 @@ checkstyle {
 
     tasks.test { finalizedBy(tasks.jacocoTestReport) }
 
-    val coverageExcludes = listOf("io/hexlet/Application.class")
+    val coverageExcludes = listOf("hexlet.code.App.class")
 
     fun JacocoReportBase.excludeEntryPoint() {
         classDirectories.setFrom(
