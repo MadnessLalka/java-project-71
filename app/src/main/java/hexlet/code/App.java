@@ -26,7 +26,7 @@ public class App implements Callable<Integer> {
      * @param filePath1 пути до файла 1
      */
     @Parameters(paramLabel = "filepath1", description = "path to first file")
-    private String filePath1;
+    private Path filePath1;
 
     /**
      * Переменная пути для второго файла
@@ -34,7 +34,7 @@ public class App implements Callable<Integer> {
      * @param filePath2 пути до файла 2
      */
     @Parameters(paramLabel = "filepath2", description = "path to second file")
-    private String filePath2;
+    private Path filePath2;
 
     /** Переменная для отображения help */
     @Option(
@@ -64,7 +64,7 @@ public class App implements Callable<Integer> {
     @Override
     public Integer call() {
         var out = spec.commandLine().getOut();
-        out.println(Differ.generate(Path.of(filePath1), Path.of(filePath2), formate));
+        out.println(Differ.generate(filePath1, filePath2, formate));
         return 0;
     }
 
