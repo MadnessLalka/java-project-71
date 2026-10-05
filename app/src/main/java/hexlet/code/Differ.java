@@ -14,36 +14,17 @@ public class Differ {
     /**
      * Метод генерирующий разницу между двумя файлами
      */
-    public static String generate(Path filePath1, Path filePath2, String formate)
+    public static String generate(Path filePath1, Path filePath2, String format)
             throws IOException {
 
         var parser = new Parser(filePath1, filePath2);
-
-        return formatter.getFormatter(parser.getFileMapper1(),
-                parser.getFileMapper1(),
-                parser.getSortedListKey()
+        var formatter = new Formatter(
+                parser.getOriginalFileMap(),
+                parser.getTargetFileMap(),
+                parser.getSortedListKey(),
+                format
         );
 
-
-//        Stream<String> diff =
-//                differSortedListKey.stream()
-//                        .map(
-//                                key -> {
-//                                    formatter =
-//                                            switch (formate) {
-//                                                case "plain" -> new Plain();
-//                                                case "stylish" -> new Stylish();
-//                                                case "json" -> new JSON();
-//                                                default -> throw new IllegalStateException(
-//                                                        "Unexpected value: " + formate);
-//                                            };
-//                                    return formatter.getFormatter(
-//                                            dataFirstFile, dataSecondFile, key);
-//                                })
-//                        .filter(line -> !line.isBlank())
-
-
+        return formatter.getFormatedDiff();
     }
-
-
 }

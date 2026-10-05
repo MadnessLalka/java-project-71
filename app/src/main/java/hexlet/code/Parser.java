@@ -15,13 +15,13 @@ import java.util.stream.Stream;
 
 @Data
 public class Parser {
-    private final Map<String, Object> fileMapper1;
-    private final Map<String, Object> fileMapper2;
+    private final Map<String, Object> originalFileMap;
+    private final Map<String, Object> targetFileMap;
     private final List<String> sortedListKey;
 
     Parser(Path filePath1, Path filePath2) throws NoSuchFileException {
-        fileMapper1 = convertObjectToMap(validateAndNormalize(filePath1));
-        fileMapper2 = convertObjectToMap(validateAndNormalize(filePath2));
+        originalFileMap = convertObjectToMap(validateAndNormalize(filePath1));
+        targetFileMap = convertObjectToMap(validateAndNormalize(filePath2));
         sortedListKey = getListSortedKey();
     }
 
@@ -55,9 +55,9 @@ public class Parser {
         return normalizedPath;
     }
 
-    private List<String> getListSortedKey() throws NoSuchFileException {
+    private List<String> getListSortedKey() {
         return
-                Stream.concat(fileMapper1.keySet().stream(), fileMapper2.keySet().stream())
+                Stream.concat(originalFileMap.keySet().stream(), targetFileMap.keySet().stream())
                         .distinct()
                         .sorted()
                         .toList();

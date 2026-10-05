@@ -1,42 +1,52 @@
 package hexlet.code.formatters;
 
-import java.util.List;
-import java.util.Map;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 @NoArgsConstructor
-public class Plain implements Formatter {
+public class Plain implements Format {
 
     @Override
-    public String getFormatter(
-            Map<String, Object> dataFirstFile, Map<String, Object> dataSecondFile, String key) {
+    public String getFormat(
+            Map<String, Object> dataFirstFile, Map<String, Object> dataSecondFile, List<String> keys) {
 
-        var firstVal = dataFirstFile.get(key) == null ? "null" : dataFirstFile.get(key);
-        var secondVal = dataSecondFile.get(key) == null ? "null" : dataSecondFile.get(key);
+        var data = keys.stream()
+                .map(key -> {
+                    var firstVal = dataFirstFile.get(key) == null ? "null" : dataFirstFile.get(key);
+                    var secondVal = dataSecondFile.get(key) == null ? "null" : dataSecondFile.get(key);
 
-        var isKeyContains = dataFirstFile.containsKey(key) && dataSecondFile.containsKey(key);
+                    var isKeyContains = dataFirstFile.containsKey(key) && dataSecondFile.containsKey(key);
 
-        var result = "";
+                    var result = "";
 
-        if (dataFirstFile.containsKey(key) && !dataSecondFile.containsKey(key)) {
-            result += "Property '" + key + "' was removed";
-        } else if (isKeyContains && !(firstVal.equals(secondVal))) {
-            result +=
-                    "Property '"
-                            + key
-                            + "' was updated. From "
-                            + convertValueToFormatter(firstVal)
-                            + " to "
-                            + convertValueToFormatter(secondVal);
-        } else if (!dataFirstFile.containsKey(key) && dataSecondFile.containsKey(key)) {
-            result +=
-                    "Property '"
-                            + key
-                            + "' was added with value: "
-                            + convertValueToFormatter(secondVal);
-        }
+                    if (dataFirstFile.containsKey(key) && !dataSecondFile.containsKey(key)) {
+                        result += "Property '" + key + "' was removed";
+                    } else if (isKeyContains && !(firstVal.equals(secondVal))) {
+                        result +=
+                                "Property '"
+                                        + key
+                                        + "' was updated. From "
+                                        + convertValueToFormatter(firstVal)
+                                        + " to "
+                                        + convertValueToFormatter(secondVal);
+                    } else if (!dataFirstFile.containsKey(key) && dataSecondFile.containsKey(key)) {
+                        result +=
+                                "Property '"
+                                        + key
+                                        + "' was added with value: "
+                                        + convertValueToFormatter(secondVal);
+                    }
 
-        return result;
+                    return result;
+                })
+                .filter(line -> !line.isBlank())
+                .collect(Collectors.joining("\n"));
+
+        return wrapIfNeeded(data);
+
     }
 
     @Override
