@@ -1,73 +1,49 @@
 package hexlet.code;
 
 import hexlet.code.formatters.Formatter;
-import hexlet.code.formatters.JSON;
-import hexlet.code.formatters.Plain;
-import hexlet.code.formatters.Stylish;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.NoSuchFileException;
-import java.nio.file.Path;
-import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import lombok.NoArgsConstructor;
-import tools.jackson.core.type.TypeReference;
+
+import java.io.IOException;
+import java.nio.file.Path;
 
 @NoArgsConstructor
 public class Differ {
 
     public static Formatter formatter;
-    private static final Plain plain;
-    private static final Stylish stylish;
-    private static final JSON json;
 
-    /** Метод генерирующий разницу между двумя файлами */
+    /**
+     * Метод генерирующий разницу между двумя файлами
+     */
     public static String generate(Path filePath1, Path filePath2, String formate)
             throws IOException {
-        json = new ;
-        var dataFirstFile = convertObjectToMap(validateAndNormalize(filePath1));
-        var dataSecondFile = convertObjectToMap(validateAndNormalize(filePath2));
 
-        var differSortedListKey =
-                Stream.concat(dataFirstFile.keySet().stream(), dataSecondFile.keySet().stream())
-                        .distinct()
-                        .sorted()
-                        .toList();
+        var parser = new Parser(filePath1, filePath2);
 
-        var diff =
-                differSortedListKey.stream()
-                        .map(
-                                key -> {
-                                    formatter =
-                                            switch (formate) {
-                                                case "plain" -> plain;
-                                                case "stylish" -> stylish;
-                                                case "json" -> json;
-                                                default ->
-                                                        throw new IllegalStateException(
-                                                                "Unexpected value: " + formate);
-                                            };
-                                    return formatter.getFormatter(
-                                            dataFirstFile, dataSecondFile, key);
-                                })
-                        .filter(line -> !line.isBlank())
-                        .collect(Collectors.joining("\n"));
+        return formatter.getFormatter(parser.getFileMapper1(),
+                parser.getFileMapper1(),
+                parser.getSortedListKey()
+        );
 
-        return formatter.wrapIfNeeded(diff);
+
+//        Stream<String> diff =
+//                differSortedListKey.stream()
+//                        .map(
+//                                key -> {
+//                                    formatter =
+//                                            switch (formate) {
+//                                                case "plain" -> new Plain();
+//                                                case "stylish" -> new Stylish();
+//                                                case "json" -> new JSON();
+//                                                default -> throw new IllegalStateException(
+//                                                        "Unexpected value: " + formate);
+//                                            };
+//                                    return formatter.getFormatter(
+//                                            dataFirstFile, dataSecondFile, key);
+//                                })
+//                        .filter(line -> !line.isBlank())
+
+
     }
 
-    private static Path validateAndNormalize(Path path) throws NoSuchFileException {
-        Path normalizedPath = path.toAbsolutePath().normalize();
 
-        if (Files.notExists(normalizedPath)) {
-            throw new NoSuchFileException("File " + normalizedPath.getFileName() + " not found");
-        }
-
-        return normalizedPath;
-    }
-
-    private static Map<String, Object> convertObjectToMap(Path file) {
-        return Parser.getObjectMapper(file).readValue(file, new TypeReference<>() {});
-    }
 }
