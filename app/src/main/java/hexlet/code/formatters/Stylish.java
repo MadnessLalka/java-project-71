@@ -50,11 +50,6 @@ public class Stylish implements Format {
                                 })
                         .collect(Collectors.joining("\n"));
 
-        return wrapIfNeeded(data);
-    }
-
-    @Override
-    public String wrapIfNeeded(String data) {
         return "{\n" + data + "\n}";
     }
 }

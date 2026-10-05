@@ -58,11 +58,6 @@ public class Plain implements Format {
                         .filter(line -> !line.isBlank())
                         .collect(Collectors.joining("\n"));
 
-        return wrapIfNeeded(data);
-    }
-
-    @Override
-    public String wrapIfNeeded(String data) {
         return data;
     }
 

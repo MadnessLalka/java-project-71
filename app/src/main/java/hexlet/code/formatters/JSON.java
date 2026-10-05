@@ -52,9 +52,4 @@ public class JSON implements Format {
                 .with(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS)
                 .writeValueAsString(data);
     }
-
-    @Override
-    public String wrapIfNeeded(String data) {
-        return data;
-    }
 }

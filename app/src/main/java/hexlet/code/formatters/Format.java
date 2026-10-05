@@ -8,6 +8,4 @@ public interface Format {
             Map<String, Object> dataFirstFile,
             Map<String, Object> dataSecondFile,
             List<String> keys);
-
-    String wrapIfNeeded(String data);
 }
