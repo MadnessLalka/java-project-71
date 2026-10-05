@@ -11,10 +11,10 @@ public class Differ {
     public static Formatter formatter;
 
     /** Метод генерирующий разницу между двумя файлами */
-    public static String generate(Path filePath1, Path filePath2, String format)
+    public static String generate(String filePath1, String filePath2, String format)
             throws IOException {
 
-        var parser = new Parser(filePath1, filePath2);
+        var parser = new Parser(Path.of(filePath1), Path.of(filePath2));
         var formatter =
                 new Formatter(
                         parser.getOriginalFileMap(),
@@ -23,13 +23,5 @@ public class Differ {
                         format);
 
         return formatter.getFormatedDiff();
-    }
-
-    public static String generate(Path path1, Path path2) throws IOException {
-        return generate(path1, path2, "stylish");
-    }
-
-    public static String generate(String filePath1, String filePath2, String format) throws IOException {
-        return generate(Path.of(filePath1), Path.of(filePath2), format);
     }
 }
