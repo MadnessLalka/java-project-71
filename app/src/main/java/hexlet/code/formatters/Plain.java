@@ -63,7 +63,7 @@ public class Plain implements Format {
 
     @Override
     public String wrapIfNeeded(String data) {
-        return "\n" + data;
+        return data;
     }
 
     private String convertValueToFormatter(Object value) {
