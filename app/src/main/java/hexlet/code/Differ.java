@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import lombok.NoArgsConstructor;
 
-@NoArgsConstructor
+@NoArgsConstructor()
 public class Differ {
 
     public static Formatter formatter;
@@ -23,5 +23,9 @@ public class Differ {
                         format);
 
         return formatter.getFormatedDiff();
+    }
+
+    public static String generate(Path path1, Path path2) throws IOException {
+        return generate(path1, path2, "stylish");
     }
 }
