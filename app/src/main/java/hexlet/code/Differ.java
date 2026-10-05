@@ -24,4 +24,9 @@ public class Differ {
 
         return formatter.getFormatedDiff();
     }
+
+    public static String generate(String filePath1, String filePath2)
+            throws IOException {
+        return generate(filePath1, filePath2, "stylish");
+    }
 }
